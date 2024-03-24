@@ -10,7 +10,7 @@ const connectToMongo = require('./db');
 
 
 app.use("/api/admin",require("./router/Admin"));
-//app.use("/api/doctor",require("./Router/Doctor"));
+app.use("/api/user",require("./router/User"));
 //app.use("/api/service",require("./Router/Service"));
 
 app.listen(process.env.PORT,()=>{
