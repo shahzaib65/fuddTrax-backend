@@ -13,15 +13,33 @@ const register = async(req,res)=>{
                 email: req.body.email,
                 password: securePass
             });
-            res.status(500).json({error: false, message: check})
+            res.status(500).json({error: false, data: check})
           
         }
         
     } catch (error) {
-        res.status(500).json({error: true,message: error.message});
+        res.status(500).json({error: true, data: error.message});
+    }
+};
+
+const login = async(req,res)=>{
+    try {   
+     const user = await model.findOne({email: req.body.email});
+     if(!user){
+        return res.status(400).json({error: true,message: "Please try to login with correct credentials"})
+     }
+     const comparePass = await bcrypt.compare(req.body.password,user.password);
+     if(!comparePass){
+        return res.status(400).json({error: true,message: "Please try to login with correct credentials"});
+     }
+     res.status(200).json({error: false, data: user.email});
+
+    } catch (error) {
+        res.status(500).json({error: true, data: error.message})
     }
 };
 
 module.exports = {
-    register
+    register,
+    login
 };
